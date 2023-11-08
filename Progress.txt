@@ -1,1 +1,4 @@
 Our progress through 30.10.2023 - 06.11.2023
+
+- 'goodreads_reviews_spoiler.json' and 'goodreads_reviews_spoiler_raw.json' are cleaned and merged together. The '.ipynb' file responsible for this has been uploaded.
+- A tiny version of the updated dataset has been uploaded to GitHub.
