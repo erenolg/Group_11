@@ -5,4 +5,6 @@ Our progress through 30.10.2023 - 09.11.2023
 - A tiny version of the updated dataset has been uploaded to GitHub.
 
 Our progress through 10.11.2023 - 20.11.2023
+-merged two of our data preprocessing files into one "preprocessing.ipynb" file
+-added some very basic data analysis (may do more down the line)
 
