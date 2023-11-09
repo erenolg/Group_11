@@ -1,4 +1,8 @@
-Our progress through 30.10.2023 - 06.11.2023
+Our progress through 30.10.2023 - 09.11.2023
 
+- review_text column is preprocessed and ready to be fed into models
 - 'goodreads_reviews_spoiler.json' and 'goodreads_reviews_spoiler_raw.json' are cleaned and merged together. The '.ipynb' file responsible for this has been uploaded.
 - A tiny version of the updated dataset has been uploaded to GitHub.
+
+Our progress through 10.11.2023 - 20.11.2023
+
