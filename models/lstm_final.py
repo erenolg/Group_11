@@ -3,18 +3,10 @@ import numpy as np
 
 np.random.seed(11)
 
-from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import f1_score
-
-
 
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Bidirectional, Dense, Dropout, SpatialDropout1D, BatchNormalization
-from tensorflow.keras.metrics import Precision, Recall
 
 
 
