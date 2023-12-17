@@ -8,3 +8,12 @@ Our progress through 10.11.2023 - 20.11.2023
 -merged two of our data preprocessing files into one "preprocessing.ipynb" file
 -added some very basic data analysis (may do more down the line)
 
+Our progress through 20.11.2023 - 4.12.2023
+-completed preliminary LSTM model that uses raw text files (glove embedding ->  around 0.5 f1 score)
+-completed deep learning model that uses rest of the data (num of comments, ratings, book name etc.)
+-completed preliminary random forest algorithm that is fed with outputs of both DL models (around 0.55 f1score)
+
+Our progress through 4.12.2023 - 17.12.2023
+-updated LSTM model (now a 0.65~0.7 f1 score) run on colab's gpu
+-
+
