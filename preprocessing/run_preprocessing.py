@@ -1,5 +1,5 @@
-from helper import merge_reduce_datasets
+from helper import data_preprocessing
 
 if __name__ == "__main__":
     
-    merge_reduce_datasets()
+    data_preprocessing()
