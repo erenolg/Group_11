@@ -1,0 +1,3 @@
+data_raw: "../data/reviews_raw.json"
+data_parsed: "../data/reviews_parsed.json"
+num_of_books: 10000
