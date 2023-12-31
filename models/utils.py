@@ -17,7 +17,7 @@ def read_dataset(train_path, test_path, max_words=None, balance_train=True, bala
     if balance_train:
         train_1 = train[train["has_spoiler"] == True]
         train_0 = train[train["has_spoiler"] == False]
-        train = pd.concat([train_1, train_0[:80000]], axis=0).sample(frac=1, random_state=2).reset_index(drop=True)
+        train = pd.concat([train_1, train_0[:60000]], axis=0).sample(frac=1, random_state=2).reset_index(drop=True)
 
     # balance the test data if needed
     if balance_test:
