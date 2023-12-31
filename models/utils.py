@@ -5,44 +5,50 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 
 
-def read_dataset(train_path, test_path, max_words, balance_train=True, balance_test=False, only_lstm=False, only_mlp=False):
+def read_dataset(train_path, test_path, max_words=None, balance_train=True, balance_test=False, only_lstm=False, only_mlp=False, nrows=None):
+  
     train = pd.read_json(train_path)
     test = pd.read_json(test_path)
+
+    if nrows:
+      train = train[:nrows]
 
     # balance the train data if needed
     if balance_train:
         train_1 = train[train["has_spoiler"] == True]
         train_0 = train[train["has_spoiler"] == False]
-        train = pd.concat([train_1, train_0[:100000]], axis=0).sample(frac=1, random_state=2).reset_index(drop=True)
+        train = pd.concat([train_1, train_0[:80000]], axis=0).sample(frac=1, random_state=2).reset_index(drop=True)
 
     # balance the test data if needed
     if balance_test:
         test_1 = test[test["has_spoiler"] == True]
         test_0 = test[test["has_spoiler"] == False]
-        test = pd.concat([test_1, test_0[:25000]], axis=0).sample(frac=1, random_state=2).reset_index(drop=True)
+        test = pd.concat([test_1, test_0[:20000]], axis=0).sample(frac=1, random_state=2).reset_index(drop=True)
 
+    if not only_mlp:
     # LSTM DATA
-    reviews_train = train["review_sentences"]
-    labels_train = train["has_spoiler"]
-    reviews_train = [' '.join([sentence for _, sentence in review]) for review in reviews_train]
+      reviews_train = train["review_sentences"]
+      labels_train = train["has_spoiler"]
+      reviews_train = [' '.join([sentence for _, sentence in review]) for review in reviews_train]
 
-    reviews_test = test["review_sentences"]
-    labels_test = test["has_spoiler"]
-    reviews_test = [' '.join([sentence for _, sentence in review]) for review in reviews_test]
+      reviews_test = test["review_sentences"]
+      labels_test = test["has_spoiler"]
+      reviews_test = [' '.join([sentence for _, sentence in review]) for review in reviews_test]
 
-    tokenizer = Tokenizer(num_words=max_words)
-    tokenizer.fit_on_texts(reviews_train)
-    sequences = tokenizer.texts_to_sequences(reviews_train)
+      tokenizer = Tokenizer(num_words=max_words)
+      tokenizer.fit_on_texts(reviews_train)
+      sequences = tokenizer.texts_to_sequences(reviews_train)
 
-    max_sequence_length = max(len(seq) for seq in sequences)
-    padded_train = pad_sequences(sequences, maxlen=max_sequence_length)
-    sequences_test = tokenizer.texts_to_sequences(reviews_test)
-    padded_test = pad_sequences(sequences_test, maxlen=max_sequence_length)
+      max_sequence_length = max(len(seq) for seq in sequences)
+      padded_train = pad_sequences(sequences, maxlen=max_sequence_length)
+      sequences_test = tokenizer.texts_to_sequences(reviews_test)
+      padded_test = pad_sequences(sequences_test, maxlen=max_sequence_length)
 
-    lstm_data = (padded_train, labels_train, padded_test, labels_test, tokenizer, max_sequence_length)
-
+      lstm_data = (padded_train, labels_train, padded_test, labels_test, tokenizer, max_sequence_length)
+    if only_lstm:
+      return lstm_data
+    
     # MLP DATA
-
     mlp_Xtrain, mlp_ytrain = train.drop(columns=["has_spoiler"]), train["has_spoiler"]
     mlp_Xtest, mlp_ytest = test.drop(columns=["has_spoiler"]), test["has_spoiler"]
 
@@ -62,10 +68,7 @@ def read_dataset(train_path, test_path, max_words, balance_train=True, balance_t
     book_max = mlp_Xtrain.book_id.max()
 
     mlp_data = (inputs_train, mlp_ytrain, inputs_test, mlp_ytest, user_max, book_max)
-
-    if only_lstm:
-        return lstm_data
-    elif only_mlp:
+    if only_mlp:
         return mlp_data
     else:
         return {"lstm_data": lstm_data, "mlp_data": mlp_data}

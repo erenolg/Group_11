@@ -19,7 +19,7 @@ def LSTM_model(max_words, embedding_dim, embedding_matrix, max_seq_length):
     model.add(Dense(1, activation='sigmoid'))
     return model
 
-def MLP_model(user_max, book_max, user_emb_size=12, book_emb_size=12):
+def MLP_model(user_max, book_max, user_emb_size=24, book_emb_size=16):
     user_id_input = Input(shape=(1,), name="user_id")
     book_id_input = Input(shape=(1,), name="book_id")
     numerics_input = Input(shape=(3,), name="numerics")
@@ -31,14 +31,16 @@ def MLP_model(user_max, book_max, user_emb_size=12, book_emb_size=12):
     book_flattened = Flatten()(book_embedding)
 
     numerics = Sequential([
-        Dense(32, activation="relu"),
+        Dense(40, activation="relu"),
         BatchNormalization(),
+        Dropout(0.5)
     ])(numerics_input)
 
     concatenated = Concatenate()([user_flattened, book_flattened, numerics])
 
-    out = BatchNormalization()(Dense(128, activation="relu")(concatenated))
-    out = BatchNormalization()(Dense(32, activation="relu")(out))
+    out = BatchNormalization()(Dense(256, activation="relu")(concatenated))
+    out = Dropout(0.5)(out)
+    out = BatchNormalization()(Dense(64, activation="relu")(out))
     out = Dense(1, activation="sigmoid")(out)
 
 
