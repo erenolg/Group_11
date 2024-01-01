@@ -10,12 +10,15 @@ def LSTM_model(max_words, embedding_dim, embedding_matrix, max_seq_length):
     model = Sequential()
     model.add(Embedding(input_dim=max_words, output_dim=embedding_dim, weights=[embedding_matrix],
                         input_length=max_seq_length, trainable=False))
-    model.add(Bidirectional(LSTM(64, return_sequences=True)))
-    # model.add(BatchNormalization())
-    model.add(LSTM(32, return_sequences=True))
+    model.add(Bidirectional(LSTM(128, return_sequences=True)))
+    model.add(BatchNormalization())
+    model.add(LSTM(64, return_sequences=True))
     model.add(LSTM(16, return_sequences=False))
-    # model.add(BatchNormalization())
-    model.add(Dense(64, activation='relu'))
+    model.add(BatchNormalization())
+    model.add(Dense(128, activation='relu', kernel_regularizer=regularizers.L1L2(l1=1e-3, l2=1e-2)))
+    model.add(Dropout(0.5))
+    model.add(Dense(64, activation='relu', kernel_regularizer=regularizers.L1L2(l1=1e-3, l2=1e-2)))
+    model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
     return model
 
